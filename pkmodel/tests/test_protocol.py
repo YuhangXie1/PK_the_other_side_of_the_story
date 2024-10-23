@@ -1,21 +1,20 @@
-import unittest
-import pkmodel as pk
+#import unittest
+#import pkmodel as pk
 
 import pytest
 
+# class ProtocolTest(unittest.TestCase):
+#     """
+#     Tests the :class:`Protocol` class.
+#     """
+#     def test_create(self):
+#         """
+#         Tests Protocol creation.
+#         """
+#         model = pk.Protocol()
+#         self.assertEqual(model.value, 43)
 
-class ProtocolTest(unittest.TestCase):
-    """
-    Tests the :class:`Protocol` class.
-    """
-    def test_create(self):
-        """
-        Tests Protocol creation.
-        """
-        model = pk.Protocol()
-        self.assertEqual(model.value, 43)
-
-from protocol import schema
+from pkmodel.protocol import schema
 import yaml
 from schema import SchemaError
 @pytest.mark.parametrize(
@@ -32,4 +31,5 @@ def test_yaml_file_validation(test, expected):
     """
     with open(test) as stream:
         data_yaml = [yaml.safe_load(stream)]
-        print(schema.validate(data_yaml))
+        with pytest.raises(SchemaError) as error_message:
+            schema.validate(data_yaml)
