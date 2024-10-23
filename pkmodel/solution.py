@@ -1,17 +1,28 @@
 #
-# Solution class
+# Solution
 #
 
-class Solution:
-    """A Pharmokinetic (PK) model solution
+import matplotlib.pyplot as plt
+import numpy as np
 
-    Parameters
-    ----------
+def out_graph():
+    '''Plot line graphs of input as model.zero_comp or model.one_comp'''
+       
+    results = model()  # Make instance of model called "results"
 
-    value: numeric, optional
-        an example paramter
+    x = results.zero_comp() # Store x values 
+    y = results.zero_comp()
 
-    """
-    def __init__(self, value=44):
-        self.value = value
+    fig = plt.figure()
+
+    try: 
+
+        plt.plot(x, y, label='zero compartment model')
+
+    except: # some error 
+
+    plt.legend()
+    plt.ylabel('drug mass [ng]')
+    plt.xlabel('time [h]')
+    plt.show()
 
