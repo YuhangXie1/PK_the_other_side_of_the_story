@@ -24,11 +24,38 @@ class Model:
         an example paramter
 
     """
-    def __init__(self, value=42):
-        self.value = value
+    def __init__(self, num_compartments = 1, dosing_type = 'IV', protocol = None):
+        self.num_compartments = num_compartments
+        self.dosing_type = dosing_type
+        self.protocol = protocol
 
-    def zero_comp(self, params):
+    def ode_system(self, y, t, params):
+        # Example: y[0] is the central compartment, y[1]..y[n] are peripheral
+        # Modify ODEs depending on the number of compartments
+        # unpack params
+        # dydt
+        # central compartment ODEs dydt[0] = #elimination from central compartment
+        # peripheral compartment ODEs
+            # if num_compartments > 1
+                #dydt[1] = exchange with central compartment
+
+        #return dydt
+        pass
+    
+    def zero_comp(self, t, params):
+        # initial conditions
+        # y[0] = np.zeros(self.num_compartments + 1)
+        # A vector of zeros representing the initial concentration of drug in all compartments
         # unpack arguments of params dict and store in args list.
+        # Handle dosing type and protocol
+        # if protocol is provided initial conc is set to dose provided
+        # if self.protocol:
+        #     y0[0] = self.protocol.dose  # Initial dose in central compartment
+        
+        # # Solve the system of ODEs
+        # solution = odeint(self.system_of_odes, y0, t, args=(params,))
+        # return solution
+
         args = [
             params['Q_p1'], params['V_c'], params['V_p1'], params['CL'], params['X']
             ]
