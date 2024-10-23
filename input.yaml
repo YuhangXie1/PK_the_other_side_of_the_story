@@ -1,0 +1,32 @@
+model:
+  type: zero_compartment
+  description: |
+   zero-compartment model with the central compartment only, including clearance rate.
+
+parameters:
+  Vc:  # Volume of the central compartment [mL]
+    description: Volume of the central compartment
+    value:   # Add value
+    units: mL
+  Vp1:  # Volume of the first peripheral compartment [mL]
+    description: Volume of the first peripheral compartment
+    value:   # Add value
+    units: mL
+  CL:  # Clearance from the central compartment [mL/h]
+    description: Elimination rate from the central compartment
+    value:   # Add value
+    units: mL/h
+
+# Dosing
+dosing:
+  dose_amount: # Add value
+  dose_unit: mg
+  route: oral
+
+observation_times:
+  - 1
+  - 2
+  - 4
+  - 8
+  - 12
+  - 24
