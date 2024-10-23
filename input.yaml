@@ -1,0 +1,34 @@
+# yaml template for zero-compartment (1 central 0 peripheral) model
+
+model:
+  type: zero_compartment
+  description: |
+   zero-compartment model with the central compartment only, including clearance rate.
+
+param:
+  Vc:  # Volume of the central compartment [mL]
+    description: Volume of the central compartment
+    value: 500  # Add value
+    units: mL
+  Vp1:  # Volume of the first peripheral compartment [mL]
+    description: Volume of the first peripheral compartment
+    value: 300 # Add value
+    units: mL
+  CL:  # Clearance from the central compartment [mL/h]
+    description: Elimination rate from the central compartment
+    value: 0.1 # Add value
+    units: mL/h
+
+# Dosing
+dosing:
+  dose_amount: # Add value
+  dose_unit: mg
+  route: oral
+
+observation_times:
+  - 1
+  - 2
+  - 4
+  - 8
+  - 12
+  - 24
