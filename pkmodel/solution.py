@@ -1,38 +1,43 @@
 #
 # Solution
 #
+
 import matplotlib.pyplot as plt
 import numpy as np
-import model as model
+from model import Model
 
-results = model(num_compartments = 1, dosing_type = 'IV', protocol = None) # Make instance of model called "results"
-results
+model = Model(num_compartments=1, dosing_type='IV', protocol=None) # Make instance of model called "results"
 
 # test data
-results = np.array([np.random.uniform(0, 10, 100), np.random.uniform(0, 1, 100)])
+#results = np.array([np.random.uniform(0, 10, 100), np.random.uniform(0, 1, 100)])
 
-def graph_output(data):
+def graph_output(results):
     """Plot line graphs of input as model.zero_comp or model.one_comp"""
+    # Create array of y values for both zero comp and one comp models
+    # Check x and y are same length.
+    # Plot line graph of zero model
 
-    x = data[0] # Store x values
-    y = data[1]
+    y_arr = np.array([results.zero_comp[1], results.one_comp[1]])
+    x = results.zero_comp()[0]
 
-    if len(x) == len(y): # Check x and y are same length.
+    if len(x) == len(y):
 
         fig = plt.figure()
 
-        try:
-            plt.plot(x, y, label=model['name'] + '- q_c')
-            #plt.plot(x, y, label=model['name'] + '- q_p1')
+        for y in y_arr:
 
-            plt.ylabel('drug mass [ng]')
-            plt.xlabel('time [h]')
+            try:
+                plt.plot(x, y, label=f"Dose type:{results.dosing_type} with {results.num_compartments} compartments")
+                plt.ylabel('Drug mass [ng]')
+                plt.xlabel('Time [h]')
 
-        except ValueError:
-            print("ValueError")
+            except ValueError:
+                print("ValueError")
 
         fig.show()
+        fig.savefig(f"output-{results.name}.png")
+
     else:
         print("x and y not same length.")
 
-graph_output(results)
+graph_output(model)
