@@ -1,6 +1,8 @@
 import unittest
 import pkmodel as pk
 
+import pytest
+
 
 class ProtocolTest(unittest.TestCase):
     """
@@ -13,3 +15,21 @@ class ProtocolTest(unittest.TestCase):
         model = pk.Protocol()
         self.assertEqual(model.value, 43)
 
+from protocol import schema
+import yaml
+from schema import SchemaError
+@pytest.mark.parametrize(
+        "test, expected",
+        [
+            ("test.yaml", object), #successful yaml returns a list object
+            ("test2.yaml", SchemaError), #incorrect yaml returns SchemaError
+
+        ]
+)
+def test_yaml_file_validation(test, expected):
+    """
+    Tests each .yaml file and validates if error occurs
+    """
+    with open(test) as stream:
+        data_yaml = [yaml.safe_load(stream)]
+        print(schema.validate(data_yaml))
