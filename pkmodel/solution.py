@@ -1,43 +1,55 @@
 #
 # Solution
 #
-
 import matplotlib.pyplot as plt
 import numpy as np
-from model import Model
+import pkmodel as pk
 
-model = Model(num_compartments=1, dosing_type='IV', protocol=None) # Make instance of model called "results"
+# Testing
+model_args = {
+    'name': 'Test name',
+    'num_comp': 1,
+    'dose_type': 'IV',
+    'y': [1, 10],
+    'Q_p1': 10.0,
+    'V_c': 100.0,
+    'V_p1': 20.0,
+    'CL': 0.5,
+    'X': 10.0,
+    'step_size': 10,
+    'endpoint': 100
+}
 
-# test data
-#results = np.array([np.random.uniform(0, 10, 100), np.random.uniform(0, 1, 100)])
+res = pk.Model(model_args) # Make instance of model
 
-def graph_output(results):
-    """Plot line graphs of input as model.zero_comp or model.one_comp"""
-    # Create array of y values for both zero comp and one comp models
-    # Check x and y are same length.
-    # Plot line graph of zero model
+def graph_output(results, t, ):
+    """Graph the pharmokinetic model
 
-    y_arr = np.array([results.zero_comp[1], results.one_comp[1]])
-    x = results.zero_comp()[0]
+    Args:
+        pk.Model object
+        Dose time point (float): t
 
-    if len(x) == len(y):
+    """
 
-        fig = plt.figure()
+    def check_results(results):
+        """Check that data is correct type"""
+        return True # if true
 
-        for y in y_arr:
+    print(results.solve(t))
 
-            try:
-                plt.plot(x, y, label=f"Dose type:{results.dosing_type} with {results.num_compartments} compartments")
-                plt.ylabel('Drug mass [ng]')
-                plt.xlabel('Time [h]')
+    x = results.solve(t)['t']
 
-            except ValueError:
-                print("ValueError")
+    for y_vals in results.solve(t)['y']:
 
-        fig.show()
-        fig.savefig(f"output-{results.name}.png")
+        try:
+            fig = plt.figure()
+            plt.plot(x, y_vals, label=f"Dose type:{results.dose_type} with {results.num_comp} compartments")
+            plt.ylabel('Drug mass [ng]')
+            plt.xlabel('Time [h]')
+            fig.show()
+            fig.savefig(f"../Plot_{results.name}_{results.num_comp}_comp_{results.dose_type}_dose.png")
 
-    else:
-        print("x and y not same length.")
+        except ValueError:
+            print("ValueError")
 
-graph_output(model)
+graph_output(res, 0)
