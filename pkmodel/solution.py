@@ -7,7 +7,7 @@ import pkmodel as pk
 import os
 
 
-def run():
+def run_output():
     """Run the pharmokinetic model and output the result."""
 
     model_args = pk.load_parameters(file)
@@ -22,22 +22,19 @@ def run():
 
         """
         t = results.solve(t)['t'] # Solve for t values
-        y = results.solve(t)['y'][0] # Solve for y values
+        y_vals = results.solve(t)['y'] # Solve for y values
 
         if not os.path.exists('../output'):
             out_path = os.makedirs('../output') # Create directory to store output
         else:
             out_path = "../output"
 
-        try:
+        for y in y_vals:
             fig = plt.figure()
             plt.plot(t, y, label=f"Dose type:{results.dose_type} with {results.num_comp} compartments")
             plt.ylabel('Drug mass [ng]')
             plt.xlabel('Time [h]')
             fig.show()
             fig.savefig(f"{out_path}\\Plot_{results.name}_{results.num_comp}_comp_{results.dose_type}_dose.png")
-
-        except ValueError:
-            print("ValueError")
 
     graph_output(res, 0)
