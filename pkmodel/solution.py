@@ -15,11 +15,11 @@ def graph_output(results, t):
     """
     
     t = results.t
-    qc = results.y[0] 
-    qp1 = results.y[1] 
+    qc = results.y[0]
+    qp1 = results.y[1]
 
     if not os.path.exists('../output'):
-       out_path = os.makedirs('../output') # Create directory to store output
+        out_path = os.makedirs('../output') # Create directory to store output
     else:
         out_path = "../output"
 
@@ -28,7 +28,7 @@ def graph_output(results, t):
     plt.plot(t, qp1, label= 'qp1')
     plt.ylabel('Drug mass [ng]')
     plt.xlabel('Time [h]')
-    fig.show()
+    #fig.show()
     fig.savefig("test.png")
 
 # if __name__ == "__main__":
