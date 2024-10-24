@@ -1,5 +1,4 @@
-# yaml template for zero-compartment (1 central 0 peripheral) model
-
+#Test 2 - fail - parameter values cannot be negative
 model:
   type: zero_compartment
   description: |
@@ -8,11 +7,11 @@ model:
 param:
   Vc:  # Volume of the central compartment [mL]
     description: Volume of the central compartment
-    value: 500  # Add value
+    value: -500  # Add value
     units: mL
   Vp1:  # Volume of the first peripheral compartment [mL]
     description: Volume of the first peripheral compartment
-    value: 300 # Add value
+    value: -300 # Add value
     units: mL
   CL:  # Clearance from the central compartment [mL/h]
     description: Elimination rate from the central compartment
@@ -32,3 +31,4 @@ observation_times:
   - 8
   - 12
   - 24
+

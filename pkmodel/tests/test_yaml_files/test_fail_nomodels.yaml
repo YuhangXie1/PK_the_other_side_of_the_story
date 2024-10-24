@@ -1,7 +1,6 @@
-# yaml template for zero-compartment (1 central 0 peripheral) model
-
+#Test 2 - fail - parameter values cannot be negative
 model:
-  type: zero_compartment
+  type: 
   description: |
    zero-compartment model with the central compartment only, including clearance rate.
 
@@ -32,3 +31,4 @@ observation_times:
   - 8
   - 12
   - 24
+

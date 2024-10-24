@@ -1,5 +1,5 @@
-# yaml template for zero-compartment (1 central 0 peripheral) model
-
+#Test yaml document
+#Test 1 - successful yaml - even if values are int, float or strings of numbers
 model:
   type: zero_compartment
   description: |
@@ -8,7 +8,7 @@ model:
 param:
   Vc:  # Volume of the central compartment [mL]
     description: Volume of the central compartment
-    value: 500  # Add value
+    value: 500.0  # Add value
     units: mL
   Vp1:  # Volume of the first peripheral compartment [mL]
     description: Volume of the first peripheral compartment
@@ -16,7 +16,7 @@ param:
     units: mL
   CL:  # Clearance from the central compartment [mL/h]
     description: Elimination rate from the central compartment
-    value: 0.1 # Add value
+    value: "0.1" # Add value
     units: mL/h
 
 # Dosing

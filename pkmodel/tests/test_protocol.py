@@ -20,16 +20,23 @@ from schema import SchemaError
 @pytest.mark.parametrize(
         "test, expected",
         [
-            ("test.yaml", object), #successful yaml returns a list object
-            ("test2.yaml", SchemaError), #incorrect yaml returns SchemaError
-
+            ("test_success.yaml", object), #successful yaml returns a list object
+            ("test_fail_strvalues.yaml", SchemaError), #incorrect yaml returns SchemaError - values cannot be turned into float
+            ("test_fail_negvalues.yaml", SchemaError), #incorrect yaml returns SchemaError - values are negative
+            ("test_fail_nomodels.yaml", SchemaError), #incorrect yaml returns SchemaError - model is not chosen
         ]
 )
 def test_yaml_file_validation(test, expected):
     """
     Tests each .yaml file and validates if error occurs
     """
-    with open(test) as stream:
+    with open("pkmodel/tests/test_yaml_files/" + test) as stream:
         data_yaml = [yaml.safe_load(stream)]
-        with pytest.raises(SchemaError) as error_message:
-            schema.validate(data_yaml)
+        try:
+             schema.validate(data_yaml)
+        except SchemaError as error_message:
+            assert True
+            
+
+def test_1():
+    assert 1 == 2

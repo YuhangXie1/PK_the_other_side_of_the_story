@@ -44,7 +44,7 @@ if __name__ == "__main__":
     # Output the parameters
     print("Parameters:")
     for param, details in parameters.items():
-        print(f"{param}:")p
+        print(f"{param}:")
         print(f"  Description: {details['description']}")
         print(f"  Value: {details['value']}")
         print(f"  Units: {details['units']}")
