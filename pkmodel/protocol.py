@@ -12,13 +12,13 @@ schema = Schema(
             "name": {"value": And(str, len)}, #checks name is a str, and not empty (length > 0)
             "num_comp": {"value": And(Use(int), lambda s: s in (1,2))},
             "dose_type": {"value": And(str, lambda s: s in ("IV"))},
-            "y": {"value": And(Use(float), lambda n: n>=0)},
+            "y": {"value": And(list)},
             "Q_p1": {"value": And(Use(float), lambda n: n>=0)},
             "V_c": {"value": And(Use(float), lambda n: n>=0)},
             "V_p1": {"value": And(Use(float), lambda n: n>=0)},
             "CL": {"value": And(Use(float), lambda n: n>=0)},
             "X": {"value": And(Use(float), lambda n: n>=0)},
-            "step_size": {"value": And(Use(float), lambda n: n>=0)},
+            "num_steps": {"value": And(Use(int), lambda n: n>=0)},
             "endpoint": {"value": And(Use(float), lambda n: n>=0)},
         }
     ],

@@ -14,17 +14,17 @@ class Model:
 
     """
     def __init__(self, params):
-        self.name = params['name'] # name of the model.
-        self.num_comp = params['num_comp'] # number of compartments to model.
-        self.dose_type = params['dose_type'] # Type of dose administered.
-        self.Q_p1 = params['Q_p1'] # [ng], drug quantity in periferal compartment.
-        self.V_c = params['V_c'] # [ml], volume central compartment.
-        self.V_p1 = params['V_p1'] # [ml], volume periferal compartment.
-        self.CL = params['CL'] # [ml/h], clearance rate from central compartment.
-        self.X = params['X'] # [ng/h], rate at which the drugs are administered into the central compartment.
-        self.num_steps = params['num_steps'] # number of time steps.
-        self.endpoint = params['endpoint'] # last timepoint.
-        self.y = params['y']  # initial conditions (list of initial drug quantities in compartments).
+        self.name = params['name']['value'] # name of the model.
+        self.num_comp = params['num_comp']['value'] # number of compartments to model.
+        self.dose_type = params['dose_type']['value'] # Type of dose administered.
+        self.Q_p1 = params['Q_p1']['value'] # [ng], drug quantity in periferal compartment.
+        self.V_c = params['V_c']['value'] # [ml], volume central compartment.
+        self.V_p1 = params['V_p1']['value'] # [ml], volume periferal compartment.
+        self.CL = params['CL']['value'] # [ml/h], clearance rate from central compartment.
+        self.X = params['X']['value'] # [ng/h], rate at which the drugs are administered into the central compartment.
+        self.num_steps = params['num_steps']['value'] # number of time steps.
+        self.endpoint = params['endpoint']['value'] # last timepoint.
+        self.y = params['y']['value']  # initial conditions (list of initial drug quantities in compartments).
 
     def ODE_sys(self, t, y):
         """

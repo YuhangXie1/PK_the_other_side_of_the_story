@@ -3,7 +3,6 @@
 #
 import matplotlib.pyplot as plt
 import numpy as np
-import pkmodel as pk
 import os
 
 def graph_output(results, t):
@@ -14,8 +13,10 @@ def graph_output(results, t):
         Dose time point (float): t
 
     """
-    t = results.solve(t)['t'] # Solve for t values
-    y = results.solve(t)['y'] # Solve for y values
+    
+    t = results.t
+    qc = results.y[0] 
+    qp1 = results.y[1] 
 
     if not os.path.exists('../output'):
        out_path = os.makedirs('../output') # Create directory to store output
@@ -23,11 +24,12 @@ def graph_output(results, t):
         out_path = "../output"
 
     fig = plt.figure()
-    plt.plot(t, y, label=f"Dose type:{results.dose_type} with {results.num_comp} compartments")
+    plt.plot(t, qc, label= 'qc')
+    plt.plot(t, qp1, label= 'qp1')
     plt.ylabel('Drug mass [ng]')
     plt.xlabel('Time [h]')
     fig.show()
-    fig.savefig(f"{out_path}\\Plot_{results.name}_{results.num_comp}_comp_{results.dose_type}_dose.png")
+    fig.savefig("test.png")
 
-if __name__ == "__main__":
-    graph_output(res, 0)
+# if __name__ == "__main__":
+#     graph_output(res, 0)
