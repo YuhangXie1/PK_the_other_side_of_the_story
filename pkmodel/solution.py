@@ -4,52 +4,40 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pkmodel as pk
+import os
 
-# Testing
-model_args = {
-    'name': 'Test name',
-    'num_comp': 1,
-    'dose_type': 'IV',
-    'y': [1, 10],
-    'Q_p1': 10.0,
-    'V_c': 100.0,
-    'V_p1': 20.0,
-    'CL': 0.5,
-    'X': 10.0,
-    'step_size': 10,
-    'endpoint': 100
-}
 
-res = pk.Model(model_args) # Make instance of model
+def run():
+    """Run the pharmokinetic model and output the result."""
 
-def graph_output(results, t, ):
-    """Graph the pharmokinetic model
+    model_args = pk.load_parameters(file)
+    res = pk.Model(model_args) # Make instance of model
 
-    Args:
-        pk.Model object
-        Dose time point (float): t
+    def graph_output(results, t):
+        """Graph the pharmokinetic model
 
-    """
+        Args:
+            pk.Model object
+            Dose time point (float): t
 
-    def check_results(results):
-        """Check that data is correct type"""
-        return True # if true
+        """
+        t = results.solve(t)['t'] # Solve for t values
+        y = results.solve(t)['y'][0] # Solve for y values
 
-    print(results.solve(t))
-
-    x = results.solve(t)['t']
-
-    for y_vals in results.solve(t)['y']:
+        if not os.path.exists('../output'):
+            out_path = os.makedirs('../output') # Create directory to store output
+        else:
+            out_path = "../output"
 
         try:
             fig = plt.figure()
-            plt.plot(x, y_vals, label=f"Dose type:{results.dose_type} with {results.num_comp} compartments")
+            plt.plot(t, y, label=f"Dose type:{results.dose_type} with {results.num_comp} compartments")
             plt.ylabel('Drug mass [ng]')
             plt.xlabel('Time [h]')
             fig.show()
-            fig.savefig(f"../Plot_{results.name}_{results.num_comp}_comp_{results.dose_type}_dose.png")
+            fig.savefig(f"{out_path}\\Plot_{results.name}_{results.num_comp}_comp_{results.dose_type}_dose.png")
 
         except ValueError:
             print("ValueError")
 
-graph_output(res, 0)
+    graph_output(res, 0)
