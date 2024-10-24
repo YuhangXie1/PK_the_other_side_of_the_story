@@ -14,6 +14,7 @@ from schema import SchemaError
             ("test_fail_strvalues.yaml", SchemaError), #incorrect yaml returns SchemaError - values cannot be turned into float
             ("test_fail_negvalues.yaml", SchemaError), #incorrect yaml returns SchemaError - values are negative
             ("test_fail_nocompartments.yaml", SchemaError), #incorrect yaml returns SchemaError - number of components are out of range
+            ("test_fail_y_list.yaml", SchemaError), #incorrect yaml returns SchemaError - number of components are out of range
         ]
 )
 def test_yaml_file_validation(test, expected):
