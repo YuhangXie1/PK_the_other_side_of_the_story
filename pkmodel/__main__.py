@@ -1,7 +1,6 @@
 # __main__.py
 
-from pkmodel import solution, protocol, model
-
+import solution, protocol, model
 
 def main():
     """ Main function runs each module in tandem """
