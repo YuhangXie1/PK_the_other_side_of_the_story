@@ -28,8 +28,14 @@ X:  # The rate at which the drugs are administered into the central compartment 
   value: 0 # Add value
   units: ng/h
 num_steps:
-  value: 0 # Add value
+  value: 1000 # Add value
   unit: h
 endpoint: # Hours after the start time of the injection
-  value: 0 # Add value
+  value: 1 # Add value
   units: h
+ka: # Hours after the start time of the injection
+  value: 1.0 # Add value
+  units: 1/h
+q: # Hours after the start time of the injection
+  value: 0.4 # Add value
+  units: ng
