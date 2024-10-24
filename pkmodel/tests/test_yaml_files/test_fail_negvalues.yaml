@@ -1,34 +1,35 @@
-#Test 2 - fail - parameter values cannot be negative
-model:
-  type: zero_compartment
-  description: |
-   zero-compartment model with the central compartment only, including clearance rate.
+# yaml template for one-compartment (1 central 0 peripheral) model
 
-param:
-  Vc:  # Volume of the central compartment [mL]
-    description: Volume of the central compartment
-    value: -500  # Add value
-    units: mL
-  Vp1:  # Volume of the first peripheral compartment [mL]
-    description: Volume of the first peripheral compartment
-    value: -300 # Add value
-    units: mL
-  CL:  # Clearance from the central compartment [mL/h]
-    description: Elimination rate from the central compartment
-    value: 0.1 # Add value
-    units: mL/h
-
-# Dosing
-dosing:
-  dose_amount: 100 # Add value
-  dose_unit: mg
-  route: oral
-
-observation_times:
-  - 1
-  - 2
-  - 4
-  - 8
-  - 12
-  - 24
-
+name:
+  value: one_compartment # Name of the model - one-compartment model (1 central 0 peripherial)
+  units: NA
+num_comp:
+  value: 1   # The number of compartments to model (1)
+  units: NA
+dose_type:
+  value: IV # Intravenous
+  units: NA
+y:  # The initial quantity of drugs in central & periferal compartments
+  value: -10 # Add value
+  units: ng
+Q_p1:  # drug quantity in periferal compartment
+  value: 0 # Keep it as 0 for one-compartment model
+  units: ng
+V_c:  # Volume of the central compartment
+  value: 0 # Add value
+  units: mL
+V_p1:  # Volume of the first peripheral compartment
+  value: 0 # Keep it as 0 for one-compartment model
+  units: mL
+CL:  # Clearance from the central compartment
+  value: 0 # Add value
+  units: mL/h
+X:  # The rate at which the drugs are administered into the central compartment [ng/h]
+  value: 0 # Add value
+  units: ng/h
+step_size:
+  value: 0 # Add value
+  unit: h
+endpoint: # Hours after the start time of the injection
+  value: 0 # Add value
+  units: h

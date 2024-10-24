@@ -1,10 +1,10 @@
 # yaml template for one-compartment (1 central 0 peripheral) model
 
 name:
-  value: one_compartment # Name of the model - one-compartment model (1 central 0 peripherial)
+  value: New model # Name of the model - one-compartment model (1 central 0 peripherial)
   units: NA
 num_comp:
-  value: 1   # The number of compartments to model (1)
+  value: 0   # The number of compartments to model (1)
   units: NA
 dose_type:
   value: IV # Intravenous
@@ -28,7 +28,7 @@ X:  # The rate at which the drugs are administered into the central compartment 
   value: 0 # Add value
   units: ng/h
 step_size:
-  value: "wow" # Add value
+  value: 0 # Add value
   unit: h
 endpoint: # Hours after the start time of the injection
   value: 0 # Add value
