@@ -7,7 +7,7 @@ num_comp:
   value: 2   # The number of compartments to model (1)
   units: NA
 dose_type:
-  value: SC # Intravenous (insert IV) or Subcutaneous (SC)
+  value: IV # Intravenous (insert IV) or Subcutaneous (SC)
   units: NA
 y:  # The initial quantity of drugs in central & peripheral compartments
   value: [0.0, 0.0] # Add value
