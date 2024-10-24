@@ -27,7 +27,7 @@ CL:  # Clearance from the central compartment
 X:  # The rate at which the drugs are administered into the central compartment [ng/h]
   value: 0 # Add value
   units: ng/h
-step_size:
+num_steps:
   value: "wow" # Add value
   unit: h
 endpoint: # Hours after the start time of the injection
