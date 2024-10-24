@@ -40,3 +40,8 @@ def test_yaml_file_validation(test, expected):
 
 def test_1():
     assert 1 == 2
+
+def test_2():
+    with pytest.raises(SystemExit):
+        #raise SystemExit(1)
+        pass
