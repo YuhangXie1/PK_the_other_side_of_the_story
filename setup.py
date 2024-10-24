@@ -64,6 +64,8 @@ setup(
         'numpy',
         'matplotlib',
         'scipy',
+        'pyyaml',
+        'schema',
     ],
     extras_require={
         'docs': [
