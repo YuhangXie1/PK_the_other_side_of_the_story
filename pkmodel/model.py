@@ -25,6 +25,8 @@ class Model:
         self.num_steps = params['num_steps']['value'] # number of time steps.
         self.endpoint = params['endpoint']['value'] # last timepoint.
         self.y = params['y']['value']  # initial conditions (list of initial drug quantities in compartments).
+        self.ka = params['ka']['value']  
+        self.q = params['q']['value']  
 
     def ODE_sys(self, t, y):
         """
@@ -42,14 +44,19 @@ class Model:
         q_c, q_p1 = y
         dqc_dt = dose(t, self.X) - (q_c / self.V_c) * self.CL
 
-        if self.num_comp == 1:
+        if self.num_comp == 1 and self.dose_type == "IV":
                 return [dqc_dt]
-        elif self.num_comp == 2:
+        elif self.num_comp == 2 and self.dose_type == "IV":
                 dqp1_dt = self.Q_p1 * ((q_c / self.V_c) - (q_p1 / self.V_p1))
                 dqc_dt -= dqp1_dt
                 return [dqc_dt, dqp1_dt]
+        elif self.dose_type == "SC":
+             dqc_dt = self.ka * self.q - (q_c / self.V_c) * self.CL
+             dqp1_dt = self.Q_p1 * ((q_c / self.V_c) - (q_p1 / self.V_p1))
+             dqc_dt -= dqp1_dt
+             return [dqc_dt, dqp1_dt]
         else:
-             raise Exception(f"No compartments")
+             raise Exception(f"Incorrect specification of .yaml file")
 
     def solve(self, t):
         y0 = np.array(self.y) # initial conditions q_c and q_p1

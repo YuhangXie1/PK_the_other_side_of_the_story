@@ -7,7 +7,7 @@ num_comp:
   value: 2   # The number of compartments to model (1)
   units: NA
 dose_type:
-  value: IV # Intravenous
+  value: SC # Intravenous (insert IV) or Subcutaneous (SC)
   units: NA
 y:  # The initial quantity of drugs in central & peripheral compartments
   value: [0.0, 0.0] # Add value
@@ -33,3 +33,10 @@ num_steps:
 endpoint: # Hours after the start time of the injection
   value: 1 # Add value
   units: h
+ka: # Hours after the start time of the injection
+  value: 1.0 # Add value
+  units: 1/h
+q: # Hours after the start time of the injection
+  value: 0.4 # Add value
+  units: ng
+
