@@ -6,24 +6,27 @@ model:
    zero-compartment model with the central compartment only, including clearance rate.
 
 param:
-  Vc:  # Volume of the central compartment [mL]
-    description: Volume of the central compartment
-    value: 500  # Add value
+  t:  # The duration for which the drug is administered
+    value:  # Add value
+    units: h
+  y:  # The initial quantity of drugs in central & periferal compartments
+    value:  # Add value
+    units: ng
+  Q_p1:  # drug quantity in periferal compartment
+    value: 0 # Keep it as 0 for zero-compartment model
+    units: ng
+  V_c:  # Volume of the central compartment
+    value:  # Add value
     units: mL
-  Vp1:  # Volume of the first peripheral compartment [mL]
-    description: Volume of the first peripheral compartment
-    value: 300 # Add value
+  V_p1:  # Volume of the first peripheral compartment
+    value: 0 # Keep it as 0 for zero-compartment model
     units: mL
-  CL:  # Clearance from the central compartment [mL/h]
-    description: Elimination rate from the central compartment
-    value: 0.1 # Add value
+  CL:  # Clearance from the central compartment
+    value: # Add value
     units: mL/h
-
-# Dosing
-dosing:
-  dose_amount: # Add value
-  dose_unit: mg
-  route: oral
+  X:  # The rate at which the drugs are administered into the central compartment [ng/h]
+    value: # Add value
+    units: ng/h
 
 observation_times:
   - 1
