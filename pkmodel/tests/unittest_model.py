@@ -26,7 +26,7 @@ class TestModel(unittest.TestCase):
         self.assertEqual(model.name, 'test_model')
         self.assertEqual(model.num_comp, 1)
 
-   def test_model_2_comp_initialisation(self):
+    def test_model_2_comp_initialisation(self):
         model = Model(self.params)
         self.assertEqual(model.name, 'test_model')
         self.assertEqual(model.num_comp, 2)
