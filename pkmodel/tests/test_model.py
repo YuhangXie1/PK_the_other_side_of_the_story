@@ -1,15 +1,28 @@
-# import unittest
-# import pkmodel as pk
+import pytest
+from pkmodel.__main__ import main
+from schema import SchemaError
 
 
-# class ModelTest(unittest.TestCase):
-#     """
-#     Tests the :class:`Model` class.
-#     """
-#     def test_create(self):
-#         """
-#         Tests Model creation.
-#         """
-#         model = pk.Model()
-#         self.assertEqual(model.value, 42)
+#Tests the loading and parsing of the yaml file
+@pytest.mark.parametrize(
+        "test, expected",
+        [
+            ("test_success.yaml", object), #successful yaml raises no errors
+        ]
+)
+def test_model_fully(test, expected):
+    """
+    Tests each .yaml file into the model and validates if error occurs
+    """
+    file_path = "pkmodel/tests/test_yaml_files/" + test
 
+    if expected == object:
+        assert main(file_path)
+        
+    elif expected == SchemaError:
+        pass
+    #     with pytest.raises(SchemaError):
+    #         load_parameters("pkmodel/tests/test_yaml_files/" + test)
+    # else:
+    #     raise Exception("wrong error received, instead of SchemaError")
+    
