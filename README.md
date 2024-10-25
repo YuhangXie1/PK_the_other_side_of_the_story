@@ -21,3 +21,5 @@ To use the program, each parameter for the model can be specified within a YAML 
 - **q** [ng]: For SC (dose_type): the quantity of the drug administered
 
 To run the package, please revise the `input.yaml` file to provide the input, and run the `main.py` file in Python3. This should give you a set of values and a graph depicting the results.
+
+Documentation: https://pk-the-other-side-of-the-story.readthedocs.io/en/latest/
