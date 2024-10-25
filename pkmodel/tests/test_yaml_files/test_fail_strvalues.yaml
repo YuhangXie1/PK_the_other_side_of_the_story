@@ -25,7 +25,7 @@ CL:  # Clearance from the central compartment
   value: 0 # Add value
   units: mL/h
 X:  # The rate at which the drugs are administered into the central compartment [ng/h]
-  value: 0 # Add value
+  value: "wow" # Add value
   units: ng/h
 num_steps:
   value: 1000 # Add value
