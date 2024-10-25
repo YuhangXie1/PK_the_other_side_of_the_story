@@ -16,3 +16,4 @@ schema==0.7.7
 scipy==1.14.1
 setuptools==75.2.0
 six==1.16.0
+sphinx==8.1.3 
