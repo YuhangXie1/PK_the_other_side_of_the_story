@@ -4,6 +4,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import pytest
 
 def graph_output(results, t):
     """Graph the pharmokinetic model
