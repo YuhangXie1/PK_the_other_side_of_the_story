@@ -1,0 +1,41 @@
+# yaml template for one-compartment (1 central 0 peripheral) model
+
+name:
+  value: one_compartment # Name of the model - one-compartment model (1 central 0 peripherial)
+  units: NA
+num_comp:
+  value: 1   # The number of compartments to model (1)
+  units: NA
+dose_type:
+  value: SC # Intravenous
+  units: NA
+y:  # The initial quantity of drugs in central & periferal compartments
+  value: [0.0,0.0] # Add value
+  units: ng
+Q_p1:  # drug quantity in periferal compartment
+  value: 1 # Keep it as 0 for one-compartment model
+  units: ng
+V_c:  # Volume of the central compartment
+  value: 1 # Add value
+  units: mL
+V_p1:  # Volume of the first peripheral compartment
+  value: 1 # Keep it as 0 for one-compartment model
+  units: mL
+CL:  # Clearance from the central compartment
+  value: 1 # Add value
+  units: mL/h
+X:  # The rate at which the drugs are administered into the central compartment [ng/h]
+  value: 1.1 # Add value
+  units: ng/h
+num_steps:
+  value: 1000 # Add value
+  unit: h
+endpoint: # Hours after the start time of the injection
+  value: 1 # Add value
+  units: h
+ka: # Hours after the start time of the injection
+  value: 1.0 # Add value
+  units: 1/h
+q: # Hours after the start time of the injection
+  value: 0.4 # Add value
+  units: ng
