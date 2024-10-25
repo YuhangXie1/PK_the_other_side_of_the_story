@@ -6,6 +6,7 @@ It uses a first order differential equation to model the quantity of drug in the
 To use the program, each parameter for the model can be specified within a yaml config file.
 These include:
 
+
 Vc​ [mL], the volume of the central compartment
 
 Vp1Vp1​ [mL], the volume of the first peripheral compartment
