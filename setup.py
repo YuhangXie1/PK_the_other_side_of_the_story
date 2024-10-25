@@ -16,11 +16,11 @@ def get_version():
     import os
     import sys
 
-    sys.path.append(os.path.abspath('pkmodel'))
-    from pkmodel.version_info import VERSION as version
-    sys.path.pop()
+    # sys.path.append(os.path.abspath('pkmodel'))
+    # from pkmodel.version_info import VERSION as version
+    # sys.path.pop()
 
-    return version
+    # return version
 
 
 def get_readme():
@@ -37,7 +37,8 @@ setup(
     name='pkmodel',
 
     # Version
-    version=get_version(),
+    #version=get_version(),
+    version="0.0.1",
 
     description='Solve a multi-compartment pharmacokinetic model',
 
