@@ -2,9 +2,9 @@
 
 # import solution, protocol, model
 
-from solution import graph_output
-from protocol import load_parameters
-from model import Model
+from pkmodel.solution import graph_output
+from pkmodel.protocol import load_parameters
+from pkmodel.model import Model
 
 def main(file_path = "input.yaml"): #default file is input.yaml
     """ Main function runs each module in tandem """

@@ -1,7 +1,6 @@
 import pytest
-from pkmodel.__main__ import main
+from main import main
 from schema import SchemaError
-
 
 #Tests the loading and parsing of the yaml file
 @pytest.mark.parametrize(
@@ -17,7 +16,7 @@ def test_model_fully(test, expected):
     file_path = "pkmodel/tests/test_yaml_files/" + test
 
     if expected == object:
-        assert main(file_path)
+        assert main(file_path) is None
         
     elif expected == SchemaError:
         pass
