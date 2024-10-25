@@ -21,7 +21,7 @@ To use the program, each parameter for the model can be specified within a YAML 
 - **$q$** [ng]: For SC (dose_type): the quantity of the drug administered
 
 The equation of the model is as follow:
-- $\frac{dq_{c}}{dt} = Dose(t) - q_{c}/V_{c}CL - Q_{p1}(\frac{q_{c}/V_{c}} - \frac{q_{p1}}{V_{p1}}$
+- $\frac{dq_{c}}{dt} = Dose(t) - q_{c}/V_{c}CL - Q_{p1}(\frac{q_{c}/V_{c}} - \frac{q_{p1}}{V_{p1}})$
 - $\frac{dq_{p1}}{dt} = Q_{p1}(\frac{q_{c}{V_{c}}} - \frac{q_{p1}{V_{p1}}})$
 
 
