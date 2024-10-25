@@ -10,7 +10,7 @@ dose_type:
   value: IV # Intravenous
   units: NA
 y:  # The initial quantity of drugs in central & periferal compartments
-  value: [0.0,0.0] # Add value
+  value: [0.0,"G"] # Add value
   units: ng
 Q_p1:  # drug quantity in periferal compartment
   value: 0 # Keep it as 0 for one-compartment model
@@ -25,7 +25,7 @@ CL:  # Clearance from the central compartment
   value: 0 # Add value
   units: mL/h
 X:  # The rate at which the drugs are administered into the central compartment [ng/h]
-  value: "wow" # Add value
+  value: 1.1 # Add value
   units: ng/h
 num_steps:
   value: 1000 # Add value

@@ -1,0 +1,344 @@
+Index: pkmodel/protocol.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#\r\n# Protocol class\r\n#\r\n\r\nclass Protocol:\r\n    \"\"\"A Pharmokinetic (PK) protocol\r\n\r\n    Parameters\r\n    ----------\r\n\r\n    value: numeric, optional\r\n        an example paramter\r\n\r\n    \"\"\"\r\n    def __init__(self, value=43):\r\n        self.value = value\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pkmodel/protocol.py b/pkmodel/protocol.py
+--- a/pkmodel/protocol.py	(revision ae80cec2aa6874e27183314aac52366eb63cf935)
++++ b/pkmodel/protocol.py	(date 1729762351401)
+@@ -1,17 +1,50 @@
+-#
+-# Protocol class
+-#
++import yaml
+ 
+-class Protocol:
+-    """A Pharmokinetic (PK) protocol
++def load_parameters(yaml_file):
++    """
++    Load parameters from a YAML file and return a dictionary.
+ 
+-    Parameters
+-    ----------
++    Args:
++        yaml_file (str): Path to the YAML file containing model parameters.
+ 
+-    value: numeric, optional
+-        an example paramter
++    Returns:
++        dict: A dictionary containing the model parameters and their descriptions.
++    """
++    with open(yaml_file, 'r') as file:
++        data = yaml.safe_load(file)
+ 
+-    """
+-    def __init__(self, value=43):
+-        self.value = value
++    # Extract parameters
++    parameters = {
++        'Vc': {
++            'description': data['param']['Vc']['description'],
++            'value': data['param']['Vc']['value'],
++            'units': data['param']['Vc']['units']
++        },
++        'Vp1': {
++            'description': data['param']['Vp1']['description'],
++            'value': data['param']['Vp1']['value'],
++            'units': data['param']['Vp1']['units']
++        },
++        'CL': {
++            'description': data['param']['CL']['description'],
++            'value': data['param']['CL']['value'],
++            'units': data['param']['CL']['units']
++        }
++    }
++
++    return parameters
+ 
++if __name__ == "__main__":
++    # Specify the path to your YAML file
++    yaml_file_path = "input.yaml"  # Adjust the path if necessary
++
++    # Load parameters
++    parameters = load_parameters(yaml_file_path)
++
++    # Output the parameters
++    print("Parameters:")
++    for param, details in parameters.items():
++        print(f"{param}:")p
++        print(f"  Description: {details['description']}")
++        print(f"  Value: {details['value']}")
++        print(f"  Units: {details['units']}")
+\ No newline at end of file
+Index: pkmodel/model.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#\r\n# Model class\r\n#\r\nimport numpy as np\r\nimport scipy.integrate\r\nimport matplotlib.pyplot as plt\r\n\r\ndef dose(t, X):\r\n    return X\r\nclass Model:\r\n    \"\"\"A Pharmokinetic (PK) model\r\n\r\n    Parameters\r\n    ----------\r\n\r\n    value: numeric, optional\r\n        an example paramter\r\n\r\n    \"\"\"\r\n    def __init__(self, params):\r\n        self.name = params['name'] # name of the model\r\n        self.num_comp = params['num_comp'] # number of compartments to model\r\n        self.dose_type = params['dose_type']\r\n        #self.protocol = params['protocol']\r\n        self.y = params['y'] # [ng], initial quantity of drugs in central and periferal compartments.\r\n        self.Q_p1 = params['Q_p1'] # [ng], drug quantity in periferal compartment\r\n        self.V_c = params['V_c'] # [ml], volume central compartment.\r\n        self.V_p1 = params['V_p1'] # [ml], volume periferal compartment.\r\n        self.CL = params['CL'] # [ml/h], clearance rate from central compartment.\r\n        self.X = params['X'] # [ng/h], rate at which the drugs are administered into the central compartment.\r\n        self.step_size = params['step_size']\r\n        self.endpoint = params['endpoint']\r\n\r\n    def ODE_sys(self, t):\r\n        \"\"\"\r\n        Creates the Right-Hand-Side function, rhs, of the ODE specifying the quantity of drugs in the central and periferal compartments. \r\n\r\n        Args:\r\n            param1: t [h], duration for which the drug is administered.\r\n\r\n        Returns:\r\n            A list containing the rhs of the change in qc (drug quantity in central channel [ng]) and qp1 over time.\r\n\r\n        Raises:\r\n            KeyError: Raises an exception if input for parameters 2-6 is not an int or float type.\r\n        \"\"\"\r\n\r\n        # if  self.y or self.Q_p1 or self.V_c or self.V_p1 or self.CL or self.X != isinstance((int, float)):\r\n        #    raise Exception(f\"Invalid input.\")\r\n        \r\n        q_c, q_p1 = self.y\r\n        dqc_dt = dose(t, self.X) - q_c / self.V_c * self.CL\r\n\r\n        if self.num_comp < 2:\r\n                return dqc_dt\r\n        else:\r\n                transition = self.Q_p1 * (q_c / self.V_c - q_p1 / self.V_p1)\r\n                dqp1_dt = transition\r\n                return dqc_dt - dqp1_dt\r\n\r\n    def solve(self, t):\r\n        # initial conditions\r\n        y0 = np.zeros(self.num_comp + 1)\r\n        # A vector of zeros representing the initial concentration of drug in all compartments\r\n        # unpack arguments of params dict and store in args list.\r\n        # Handle dosing type and protocol\r\n        # if protocol is provided initial conc is set to dose provided\r\n        # if self.protocol:\r\n        #     y0[0] = self.protocol.dose  # Initial dose in central compartment\r\n        \r\n        # # Solve the system of ODEs\r\n        # solution = odeint(self.system_of_odes, y0, t, args=(params,))\r\n        # return solution\r\n        # unpack timepoints for which to evaluate the function.\r\n        t_eval = np.linspace(0, self.step_size, self.endpoint)\r\n        # solve the ODE for the given parameters.\r\n        sol = scipy.integrate.solve_ivp(\r\n        fun=lambda t, y: self.ODE_sys(t),\r\n        t_span=[t_eval[0], t_eval[-1]],\r\n        y0=y0, t_eval=t_eval\r\n        )\r\n        return sol\r\n\r\n# Testing\r\nmodel_args = {\r\n    'name': 'Garry',\r\n    'num_comp': 1,\r\n    'dose_type': 'IV',\r\n    'y': [1, 1],\r\n    'Q_p1': 1.0,\r\n    'V_c': 1.0,\r\n    'V_p1': 1.0,\r\n    'CL': 1.0,\r\n    'X': 1.0,\r\n    'step_size': 1,\r\n    'endpoint': 10\r\n}\r\n\r\nGarry = Model(model_args)\r\nres = Garry.solve(t=0)\r\nprint(Garry.name)\r\nprint(res.y)\r\nplt.plot(res.y[0], res.t)\r\nplt.plot(res.y[1], res.t)\r\nplt.show()\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pkmodel/model.py b/pkmodel/model.py
+--- a/pkmodel/model.py	(revision ae80cec2aa6874e27183314aac52366eb63cf935)
++++ b/pkmodel/model.py	(date 1729761895973)
+@@ -5,8 +5,11 @@
+ import scipy.integrate
+ import matplotlib.pyplot as plt
+ 
++
+ def dose(t, X):
+     return X
++
++
+ class Model:
+     """A Pharmokinetic (PK) model
+ 
+@@ -17,23 +20,24 @@
+         an example paramter
+ 
+     """
++
+     def __init__(self, params):
+-        self.name = params['name'] # name of the model
+-        self.num_comp = params['num_comp'] # number of compartments to model
++        self.name = params['name']  # name of the model
++        self.num_comp = params['num_comp']  # number of compartments to model
+         self.dose_type = params['dose_type']
+-        #self.protocol = params['protocol']
+-        self.y = params['y'] # [ng], initial quantity of drugs in central and periferal compartments.
+-        self.Q_p1 = params['Q_p1'] # [ng], drug quantity in periferal compartment
+-        self.V_c = params['V_c'] # [ml], volume central compartment.
+-        self.V_p1 = params['V_p1'] # [ml], volume periferal compartment.
+-        self.CL = params['CL'] # [ml/h], clearance rate from central compartment.
+-        self.X = params['X'] # [ng/h], rate at which the drugs are administered into the central compartment.
++        # self.protocol = params['protocol']
++        self.y = params['y']  # [ng], initial quantity of drugs in central and periferal compartments.
++        self.Q_p1 = params['Q_p1']  # [ng], drug quantity in periferal compartment
++        self.V_c = params['V_c']  # [ml], volume central compartment.
++        self.V_p1 = params['V_p1']  # [ml], volume periferal compartment.
++        self.CL = params['CL']  # [ml/h], clearance rate from central compartment.
++        self.X = params['X']  # [ng/h], rate at which the drugs are administered into the central compartment.
+         self.step_size = params['step_size']
+         self.endpoint = params['endpoint']
+ 
+     def ODE_sys(self, t):
+         """
+-        Creates the Right-Hand-Side function, rhs, of the ODE specifying the quantity of drugs in the central and periferal compartments. 
++        Creates the Right-Hand-Side function, rhs, of the ODE specifying the quantity of drugs in the central and periferal compartments.
+ 
+         Args:
+             param1: t [h], duration for which the drug is administered.
+@@ -47,16 +51,16 @@
+ 
+         # if  self.y or self.Q_p1 or self.V_c or self.V_p1 or self.CL or self.X != isinstance((int, float)):
+         #    raise Exception(f"Invalid input.")
+-        
++
+         q_c, q_p1 = self.y
+         dqc_dt = dose(t, self.X) - q_c / self.V_c * self.CL
+ 
+         if self.num_comp < 2:
+-                return dqc_dt
++            return dqc_dt
+         else:
+-                transition = self.Q_p1 * (q_c / self.V_c - q_p1 / self.V_p1)
+-                dqp1_dt = transition
+-                return dqc_dt - dqp1_dt
++            transition = self.Q_p1 * (q_c / self.V_c - q_p1 / self.V_p1)
++            dqp1_dt = transition
++            return dqc_dt - dqp1_dt
+ 
+     def solve(self, t):
+         # initial conditions
+@@ -67,7 +71,7 @@
+         # if protocol is provided initial conc is set to dose provided
+         # if self.protocol:
+         #     y0[0] = self.protocol.dose  # Initial dose in central compartment
+-        
++
+         # # Solve the system of ODEs
+         # solution = odeint(self.system_of_odes, y0, t, args=(params,))
+         # return solution
+@@ -75,12 +79,13 @@
+         t_eval = np.linspace(0, self.step_size, self.endpoint)
+         # solve the ODE for the given parameters.
+         sol = scipy.integrate.solve_ivp(
+-        fun=lambda t, y: self.ODE_sys(t),
+-        t_span=[t_eval[0], t_eval[-1]],
+-        y0=y0, t_eval=t_eval
++            fun=lambda t, y: self.ODE_sys(t),
++            t_span=[t_eval[0], t_eval[-1]],
++            y0=y0, t_eval=t_eval
+         )
+         return sol
+ 
++
+ # Testing
+ model_args = {
+     'name': 'Garry',
+@@ -102,5 +107,4 @@
+ print(res.y)
+ plt.plot(res.y[0], res.t)
+ plt.plot(res.y[1], res.t)
+-plt.show()
+-
++plt.show()
+\ No newline at end of file
+Index: pyproject.toml
+===================================================================
+diff --git a/pyproject.toml b/pyproject.toml
+new file mode 100644
+--- /dev/null	(date 1729763271417)
++++ b/pyproject.toml	(date 1729763271417)
+@@ -0,0 +1,26 @@
++[build-system]
++requires = ["setuptools", "wheel"]
++build-backend = "setuptools.build_meta"
++
++[project]
++name = "PK_the_other_side_of_the_story"
++version = "0.0.1"
++authors = [
++  { name="Yuhang Xie", email="matt.jaquiery@dtc.ox.ac.uk" }, { name="Tiga "}
++]
++description = "A package to solve for a pharmokinetic (PK) model."
++readme = "README.md"
++license = { file="LICENSE" }
++requires-python = ">=3.7"
++classifiers = [
++    "Programming Language :: Python :: 3",
++    "License :: OSI Approved :: MIT License",
++    "Operating System :: OS Independent",
++]
++dependencies = ["numpy", "matplotlib", "scipy"]
++
++[
++project.urls
++]
++Source = "https://github.com/YuhangXie1/PK_the_other_side_of_the_story.git"
++
+Index: pkmodel/tests/test_solution.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import unittest\r\nimport pkmodel as pk\r\n\r\n\r\nclass SolutionTest(unittest.TestCase):\r\n    \"\"\"\r\n    Tests the :class:`Solution` class.\r\n    \"\"\"\r\n    def test_create(self):\r\n        \"\"\"\r\n        Tests Solution creation.\r\n        \"\"\"\r\n        model = pk.Solution()\r\n        self.assertEqual(model.value, 44)\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pkmodel/tests/test_solution.py b/pkmodel/tests/test_solution.py
+--- a/pkmodel/tests/test_solution.py	(revision ae80cec2aa6874e27183314aac52366eb63cf935)
++++ b/pkmodel/tests/test_solution.py	(date 1729761631086)
+@@ -1,15 +1,8 @@
+ import unittest
+ import pkmodel as pk
+-
++import pytest
+ 
+-class SolutionTest(unittest.TestCase):
+-    """
+-    Tests the :class:`Solution` class.
+-    """
+-    def test_create(self):
+-        """
+-        Tests Solution creation.
+-        """
+-        model = pk.Solution()
+-        self.assertEqual(model.value, 44)
+-
++def test_graph_output():
++    """Test for TypeError when passing strings"""
++    with pytest.raises(TypeError):
++        error_expected = daily_min([['Hello', 'there'], ['General', 'Kenobi']])
+\ No newline at end of file
+Index: .idea/PK_the_other_side_of_the_story.iml
+===================================================================
+diff --git a/.idea/PK_the_other_side_of_the_story.iml b/.idea/PK_the_other_side_of_the_story.iml
+new file mode 100644
+--- /dev/null	(date 1729726110156)
++++ b/.idea/PK_the_other_side_of_the_story.iml	(date 1729726110156)
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="PYTHON_MODULE" version="4">
++  <component name="NewModuleRootManager">
++    <content url="file://$MODULE_DIR$">
++      <excludeFolder url="file://$MODULE_DIR$/.venv" />
++      <excludeFolder url="file://$MODULE_DIR$/pk-venv" />
++    </content>
++    <orderEntry type="jdk" jdkName="Python 3.13 (PK_the_other_side_of_the_story)" jdkType="Python SDK" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++  <component name="PyDocumentationSettings">
++    <option name="format" value="PLAIN" />
++    <option name="myDocStringFormat" value="Plain" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/inspectionProfiles/profiles_settings.xml
+===================================================================
+diff --git a/.idea/inspectionProfiles/profiles_settings.xml b/.idea/inspectionProfiles/profiles_settings.xml
+new file mode 100644
+--- /dev/null	(date 1729726110166)
++++ b/.idea/inspectionProfiles/profiles_settings.xml	(date 1729726110166)
+@@ -0,0 +1,6 @@
++<component name="InspectionProjectProfileManager">
++  <settings>
++    <option name="USE_PROJECT_PROFILE" value="false" />
++    <version value="1.0" />
++  </settings>
++</component>
+\ No newline at end of file
+Index: .idea/modules.xml
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1729726110176)
++++ b/.idea/modules.xml	(date 1729726110176)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/PK_the_other_side_of_the_story.iml" filepath="$PROJECT_DIR$/.idea/PK_the_other_side_of_the_story.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1729726110187)
++++ b/.idea/misc.xml	(date 1729726110187)
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Black">
++    <option name="sdkName" value="Python 3.13 (PK_the_other_side_of_the_story)" />
++  </component>
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13 (PK_the_other_side_of_the_story)" project-jdk-type="Python SDK" />
++</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1729726110207)
++++ b/.idea/vcs.xml	(date 1729726110207)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+--- /dev/null	(date 1729726110247)
++++ b/.idea/.gitignore	(date 1729726110247)
+@@ -0,0 +1,3 @@
++# Default ignored files
++/shelf/
++/workspace.xml
