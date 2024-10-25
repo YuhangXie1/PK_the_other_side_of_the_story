@@ -7,6 +7,8 @@ from schema import SchemaError
         "test, expected",
         [
             ("test_success.yaml", object), #successful yaml raises no errors
+            ("test_success_2comp.yaml", object),
+            ("test_success_SC.yaml", object),
         ]
 )
 def test_model_fully(test, expected):
