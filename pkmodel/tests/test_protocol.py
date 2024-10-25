@@ -2,9 +2,11 @@
 #import pkmodel as pk
 
 import pytest
-from pkmodel.protocol import schema
+from pkmodel.protocol import schema, load_parameters
 import yaml
 from schema import SchemaError
+
+
 
 #Tests the loading and parsing of the yaml file
 @pytest.mark.parametrize(
@@ -21,12 +23,12 @@ def test_yaml_file_validation(test, expected):
     """
     Tests each .yaml file and validates if error occurs
     """
-    with open("pkmodel/tests/test_yaml_files/" + test) as stream:
-        data_yaml = [yaml.safe_load(stream)]
-        if expected == object:
-            assert schema.validate(data_yaml)
-        elif expected == SchemaError:
-            with pytest.raises(SchemaError):
-                schema.validate(data_yaml)
-        else:
-            raise Exception("wrong error received, instead of SchemaError")
+    if expected == object:
+        assert load_parameters("pkmodel/tests/test_yaml_files/" + test)
+        
+    elif expected == SchemaError:
+        with pytest.raises(SchemaError):
+            load_parameters("pkmodel/tests/test_yaml_files/" + test)
+    else:
+        raise Exception("wrong error received, instead of SchemaError")
+    

@@ -3,7 +3,7 @@
 #
 from setuptools import setup, find_packages
 
-
+    
 def get_version():
     """
     Get version number from the pkmodel module.
@@ -17,7 +17,7 @@ def get_version():
     import sys
 
     sys.path.append(os.path.abspath('pkmodel'))
-    from version_info import VERSION as version
+    from pkmodel.version_info import VERSION as version
     sys.path.pop()
 
     return version
@@ -39,33 +39,44 @@ setup(
     # Version
     version=get_version(),
 
-    description='An example Python project.',
+    description='Solve a multi-compartment pharmacokinetic model',
 
     long_description=get_readme(),
 
     license='MIT license',
 
-    # author='',
+    author='BBSRC DTP Students from the Other Side',
 
     # author_email='',
 
-    maintainer='Martin Robinson',
+    # maintainer='Martin Robinson',
 
-    maintainer_email='martin.robinson@cs.ox.ac.uk',
+    # maintainer_email='martin.robinson@cs.ox.ac.uk',
 
-    url='https://github.com/SABS-R3/2020-software-engineering-projects-pk',
+    url='https://github.com/YuhangXie1/PK_the_other_side_of_the_story',
 
     # Packages to include
     packages=find_packages(include=('pkmodel', 'pkmodel.*')),
 
     # List of dependencies
     install_requires=[
-        # Dependencies go here!
-        'numpy',
-        'matplotlib',
-        'scipy',
-        'pyyaml',
-        'schema',
+        "contourpy==1.3.0",
+        "cycler==0.12.1",
+        "fonttools==4.54.1",
+        "iniconfig==2.0.0",
+        "kiwisolver==1.4.7",
+        "matplotlib==3.9.2",
+        "numpy==2.1.2",
+        "packaging==24.1",
+        "pillow==11.0.0",
+        "pluggy==1.5.0",
+        "pyparsing==3.2.0",
+        "python-dateutil==2.9.0.post0",
+        "PyYAML==6.0.2",
+        "schema==0.7.7",
+        "scipy==1.14.1",
+        "setuptools==75.2.0",
+        "six==1.16.0",
     ],
     extras_require={
         'docs': [
@@ -77,6 +88,7 @@ setup(
         'dev': [
             # Flake8 for code style checking
             'flake8>=3',
+            'pytest==8.3.3',
         ],
     },
 )
