@@ -10,9 +10,9 @@ schema = Schema(
     [
         {
             "name": {"value": And(str, len)}, #checks name is a str, and not empty (length > 0)
-            "num_comp": {"value": And(Use(int), lambda s: s in (1,2))},
-            "dose_type": {"value": And(str, lambda s: s in ("IV", "SC"))},
-            "y": {"value": And(list, [Use(float), lambda n: n>=0])},
+            "num_comp": {"value": And(Use(int), lambda s: s in (1,2))}, #checks and turns into int and is 1 or 2
+            "dose_type": {"value": And(str, lambda s: s in ("IV", "SC"))}, #checks is str and is IV or SC
+            "y": {"value": And(list, [Use(float), lambda n: n>=0])}, #checks and turns into float, and is positive
             "Q_p1": {"value": And(Use(float), lambda n: n>=0)},
             "V_c": {"value": And(Use(float), lambda n: n>=0)},
             "V_p1": {"value": And(Use(float), lambda n: n>=0)},
@@ -43,7 +43,7 @@ def load_parameters(yaml_file):
     try:
         return schema.validate([data])[0]
     except SchemaError as error_message:
-        return f"yaml input has raised an error {error_message}"
+        raise SchemaError(f"yaml input file has raised an error {error_message}")
 
 
 if __name__ == "__main__":
